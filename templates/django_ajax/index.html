@@ -1,0 +1,21 @@
+{% extends 'django_ajax/base.html' %}
+
+
+{% block title %} Index {% endblock title %}
+{% load static %}
+{% block content %}
+    <form action="{% url 'django_ajax:index' %}" method="GET">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h2>Popular posts: </h2></legend>
+        <ul class="list-group list-group-flush">
+            {% for post in posts %}
+                <li class="list-group-item"><a href="{% url 'blog:post_detail' post.id %}?next={{ request.path }}">{{ post }} </a>
+                    <span class="badge bg-warning">  Comments: {{ post.comment_count }}</span></li>
+{#                Comments: {{ post.comment_count }}</li>#}
+            {% endfor %}
+        </ul>
+        </fieldset>
+        <br>
+    </form>
+{% endblock content %}
