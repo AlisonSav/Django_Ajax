@@ -1,7 +1,5 @@
-from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from django_ajax import tasks
