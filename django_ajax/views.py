@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
+from django_ajax import tasks
 from django_ajax.forms import ContactForm
 
 
@@ -16,12 +17,10 @@ def contact_us(request, form, template_name):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            send_mail(
-                form.cleaned_data["subject"],
-                form.cleaned_data["message"],
-                settings.NOREPLY_EMAIL,
-                [form.cleaned_data["from_email"]],
-                fail_silently=False,
+            tasks.contact_email(
+                form.cleaned_data.get("subject"),
+                form.cleaned_data.get("message"),
+                [form.cleaned_data.get("from_email")],
             )
             data["form_is_valid"] = True
         else:
